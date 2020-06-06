@@ -1,52 +1,52 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="">
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>PrVV</title>
+  <title>Review</title>
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.13.0/index.js" ></script> -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <!-- <script src="main.js" type="module"></script> -->
   <script>
     function getReviews() {
       console.log('get me');
-      searchText = document.getElementById("search-review").value
+      let searchText = document.getElementById("search-review").value
       if (searchText !== '') {
-        var reviews = callBE(searchText)
+        let reviews = callBE(searchText)
         addReviews(reviews);
       }
     }
     function callBE(search) {
-      return [{
-        'score': 2,
-        'help': 3,
-        'text': 'Hiahaasda asdasda dsad wda sw'
-      }]
+        const url = 'http://localhost:8000/search?keyword='+search
+        return axios.get(url).then(response => {
+            console.table(response.data);
+            return response.data
+        }).catch(error => console.error("Error in getting api response", error))
     }
     function addReviews(reviews) {
 
       console.log(reviews);
-      var cards = document.getElementById("review-cards");
+      let cards = document.getElementById("review-cards");
       cards.remove();
       cards = document.createElement("DIV");
       cards.id = "review-cards"
       document.body.appendChild(cards);
-      for (review of reviews) {
-        var card = document.createElement("DIV");
+      for (let review of reviews) {
+        let card = document.createElement("DIV");
         cards.appendChild(card);
         card.className = "card";
-        var score = document.createElement("H1");
+        let score = document.createElement("H1");
         score.innerHTML = review.score;
         card.appendChild(score);
-        var help = document.createElement("P");
+        let help = document.createElement("P");
         help.className = "price"
         help.innerHTML = review.help;
         card.appendChild(help);
-        var text = document.createElement("P");
+        let text = document.createElement("P");
         text.innerHTML = review.text;
         card.appendChild(text);
       }
@@ -99,7 +99,7 @@
       max-width: 300px;
       margin: auto;
       text-align: center;
-      font-family: arial;
+        font-family: arial, serif;
     }
 
     .price {
@@ -115,14 +115,11 @@
   <div id="app"></div>
   <div>
     <div class="example">
-      <input type="text" placeholder="Search.." name="search" id="search-review">
+      <input id="search-review" name="search" placeholder="Search.." type="text" />
       <button onclick="getReviews()"><i class="fa fa-search"></i></button>
-      </form>
       <div class="cards" id="review-cards">
       </div>
-
-
     </div>
+  </div>
 </body>
-
 </html>
