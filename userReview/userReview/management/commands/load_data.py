@@ -3,11 +3,14 @@ import json
 import logging
 from django.core.management.base import BaseCommand, CommandError
 from userReview.models import Product, User, Review
-# from django.conf import settings
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-logger.addHandler(logging.StreamHandler())
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+handler = logging.StreamHandler()
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 
 class Command(BaseCommand):

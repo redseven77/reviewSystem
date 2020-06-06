@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 
 
 class Product(models.Model):
@@ -18,8 +19,8 @@ class User(models.Model):
 
 
 class Review(models.Model):
-    userId = models.ForeignKey(to=User, on_delete=models.CASCADE)
-    productId = models.ForeignKey(to=Product, on_delete=models.CASCADE)
+    userId = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="user")
+    productId = models.ForeignKey(to=Product, on_delete=models.CASCADE, related_name="product")
     helpfulness = models.CharField(max_length=255)
     score = models.FloatField(max_length=10)
     time = models.CharField(max_length=255, null=False)
