@@ -14,7 +14,9 @@ import os
 import json
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+print("BASE_DIR: ", BASE_DIR)
 env_loc = os.path.join(BASE_DIR, '.env')
+media_path = os.path.join(BASE_DIR, 'userReview', 'media')
 with open(env_loc) as file:
     ENV = json.load(file)
 
