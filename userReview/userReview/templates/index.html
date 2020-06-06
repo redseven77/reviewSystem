@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>PrVV</title>
+
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.13.0/index.js" ></script> -->
+  <!-- <script src="main.js" type="module"></script> -->
+  <script>
+    function getReviews() {
+      console.log('get me');
+      searchText = document.getElementById("search-review").value
+      if (searchText !== '') {
+        var reviews = callBE(searchText)
+        addReviews(reviews);
+      }
+    }
+    function callBE(search) {
+      return [{
+        'score': 2,
+        'help': 3,
+        'text': 'Hiahaasda asdasda dsad wda sw'
+      }]
+    }
+    function addReviews(reviews) {
+
+      console.log(reviews);
+      var cards = document.getElementById("review-cards");
+      cards.remove();
+      cards = document.createElement("DIV");
+      cards.id = "review-cards"
+      document.body.appendChild(cards);
+      for (review of reviews) {
+        var card = document.createElement("DIV");
+        cards.appendChild(card);
+        card.className = "card";
+        var score = document.createElement("H1");
+        score.innerHTML = review.score;
+        card.appendChild(score);
+        var help = document.createElement("P");
+        help.className = "price"
+        help.innerHTML = review.help;
+        card.appendChild(help);
+        var text = document.createElement("P");
+        text.innerHTML = review.text;
+        card.appendChild(text);
+      }
+
+    }
+
+  </script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Style the search field */
+    div.example input[type=text] {
+      padding: 10px;
+      font-size: 17px;
+      border: 1px solid grey;
+      float: left;
+      width: 80%;
+      background: #f1f1f1;
+    }
+
+    /* Style the submit button */
+    div.example button {
+      float: left;
+      width: 20%;
+      padding: 10px;
+      background: #2196F3;
+      color: white;
+      font-size: 17px;
+      border: 1px solid grey;
+      border-left: none;
+      /* Prevent double borders */
+      cursor: pointer;
+    }
+
+    div.example button:hover {
+      background: #0b7dda;
+    }
+
+    /* Clear floats */
+    div.example::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+
+    .card {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      max-width: 300px;
+      margin: auto;
+      text-align: center;
+      font-family: arial;
+    }
+
+    .price {
+      color: grey;
+      font-size: 22px;
+    }
+  </style>
+
+
+</head>
+
+<body>
+  <div id="app"></div>
+  <div>
+    <div class="example">
+      <input type="text" placeholder="Search.." name="search" id="search-review">
+      <button onclick="getReviews()"><i class="fa fa-search"></i></button>
+      </form>
+      <div class="cards" id="review-cards">
+      </div>
+
+
+    </div>
+</body>
+
+</html>
