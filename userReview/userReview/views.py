@@ -12,6 +12,8 @@ def get_highest_review(keyword):
 
 
 class ReviewListView(ListAPIView):
+    queryset = ''
+
     def get(self, request, *args, **kwargs):
         keyword = request.query_params['keyword']
         reviews = get_highest_review(keyword=keyword)
