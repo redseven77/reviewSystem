@@ -7,7 +7,7 @@ from userReview.serializer import ReviewSerializer, UserSerializer, ProductSeria
 
 
 def get_highest_review(keyword):
-    reviews = Review.objects.filter(text__regex=keyword).order_by("-score")
+    reviews = Review.objects.filter(text__contains=keyword).order_by("-score")
     return reviews
 
 
@@ -17,6 +17,7 @@ class ReviewListView(ListAPIView):
     def get(self, request, *args, **kwargs):
         keyword = request.query_params['keyword']
         reviews = get_highest_review(keyword=keyword)
+        data = ReviewSerializer(reviews, many=True).data
         return Response(data=ReviewSerializer(reviews, many=True).data, status=HTTP_200_OK)
 
 

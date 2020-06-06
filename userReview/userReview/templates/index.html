@@ -1,54 +1,77 @@
 <!DOCTYPE html>
 <html lang="">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Review</title>
+  <title>PrVV</title>
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"
     integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.13.0/index.js" ></script> -->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <!-- <script src="main.js" type="module"></script> -->
   <script>
     function getReviews() {
       console.log('get me');
       let searchText = document.getElementById("search-review").value
       if (searchText !== '') {
-        let reviews = callBE(searchText)
-        addReviews(reviews);
+        callBE(searchText).then(reviews=>addReviews(reviews));
+        // addReviews(reviews);
       }
     }
     function callBE(search) {
         const url = 'http://localhost:8000/search?keyword='+search
-        return axios.get(url).then(response => {
-            console.table(response.data);
-            return response.data
-        }).catch(error => console.error("Error in getting api response", error))
+        return new Promise((resolve, reject)=>{
+          axios.get(url).then(response => {
+              resolve(response.data);
+          }).catch(error => console.error("Error in getting api response", error));
+        });
     }
     function addReviews(reviews) {
-
-      console.log(reviews);
       let cards = document.getElementById("review-cards");
       cards.remove();
       cards = document.createElement("DIV");
       cards.id = "review-cards"
       document.body.appendChild(cards);
+
       for (let review of reviews) {
         let card = document.createElement("DIV");
         cards.appendChild(card);
         card.className = "card";
-        let score = document.createElement("H1");
-        score.innerHTML = review.score;
-        card.appendChild(score);
-        let help = document.createElement("P");
-        help.className = "price"
-        help.innerHTML = review.help;
-        card.appendChild(help);
-        let text = document.createElement("P");
+
+        let scoreHelp = document.createElement("DIV");
+        card.appendChild(scoreHelp);
+        let score = document.createElement("SPAN");
+        score.innerHTML = "Score : "+review.score;
+        score.className = "score"
+        scoreHelp.appendChild(score);
+        let helpfulness = document.createElement("SPAN");
+        helpfulness.innerHTML = "Helpfulness : "+review.helpfulness;
+        helpfulness.className = "helpfulness"
+        scoreHelp.appendChild(helpfulness);
+
+        let summary = document.createElement("DIV");
+        summary.innerHTML = review.summary;
+        summary.className = "summary";
+        card.appendChild(summary);
+
+        let text = document.createElement("DIV");
         text.innerHTML = review.text;
+        text.className = "text";
         card.appendChild(text);
+
+        let nameProduct = document.createElement("DIV");
+        card.appendChild(nameProduct);
+        let name = document.createElement("SPAN");
+        name.innerHTML = "Name : "+review.profileName;
+        name.className = "profile-name"
+        nameProduct.appendChild(name);
+        let product = document.createElement("SPAN");
+        product.innerHTML = "Product Id : "+review.productId;
+        product.className = "product"
+        nameProduct.appendChild(product);
       }
 
     }
@@ -96,15 +119,42 @@
 
     .card {
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-      max-width: 300px;
+      width: 90%;
       margin: auto;
       text-align: center;
         font-family: arial, serif;
+      padding: 5px;
+      overflow: hidden;
     }
 
-    .price {
+    #review-cards {
+      padding: 60px;
+    }
+
+    .text {
+      width: 100%;
+      padding: 20px;
+    }
+
+    .helpfulness {
+      float: left;
+    }
+
+    .summary{
+      font-weight: bold;
+    }
+
+    .score {
       color: grey;
-      font-size: 22px;
+      float: right;
+    }
+    .profile-name {
+      float: left;
+    }
+
+    .product {
+      color: grey;
+      float: right;
     }
   </style>
 
@@ -115,11 +165,12 @@
   <div id="app"></div>
   <div>
     <div class="example">
-      <input id="search-review" name="search" placeholder="Search.." type="text" />
+        <label for="search-review"></label><input id="search-review" name="search" placeholder="Search.." type="text">
       <button onclick="getReviews()"><i class="fa fa-search"></i></button>
-      <div class="cards" id="review-cards">
+      <div id="review-cards">
       </div>
     </div>
   </div>
 </body>
+
 </html>
