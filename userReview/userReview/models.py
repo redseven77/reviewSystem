@@ -19,8 +19,8 @@ class User(models.Model):
 
 
 class Review(models.Model):
-    userId = models.ForeignKey(to=User, on_delete=models.CASCADE, related_name="user")
-    productId = models.ForeignKey(to=Product, on_delete=models.CASCADE, related_name="product")
+    userId = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    productId = models.ForeignKey(to=Product, on_delete=models.CASCADE)
     helpfulness = models.CharField(max_length=255)
     score = models.FloatField(max_length=10)
     time = models.CharField(max_length=255, null=False)
