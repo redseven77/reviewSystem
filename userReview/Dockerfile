@@ -27,4 +27,4 @@ COPY . .
 RUN pip3 install -r requirements.txt && \
     pip3 freeze
 RUN python3 manage.py migrate userReview
-CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["./start.sh"]
