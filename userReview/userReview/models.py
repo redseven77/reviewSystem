@@ -3,14 +3,14 @@ from django.db.models import Q
 
 
 class Product(models.Model):
-    productId = models.CharField(max_length=255, null=False)
+    productId = models.CharField(max_length=255, null=False, unique=True)
 
     class Meta:
         app_label = "userReview"
 
 
 class User(models.Model):
-    userId = models.CharField(max_length=255, null=False)
+    userId = models.CharField(max_length=255, null=False, unique=True)
     profileName = models.CharField(max_length=255, null=False)
     productId = models.ManyToManyField(to=Product, through='Review')
 
