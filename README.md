@@ -1,5 +1,5 @@
 # reviewSystem
-After Clone:  
+After Clone:
 * edit **.env** and provide DB configurations.
 *  create a static directory in __reviewSystem/userReview/userReview__
 * Put **foods.txt** folder in same directory.

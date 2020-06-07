@@ -26,5 +26,7 @@ EXPOSE 8000
 COPY . .
 RUN pip3 install -r requirements.txt && \
     pip3 freeze
-RUN python3 manage.py migrate userReview
+RUN python3 manage.py migrate
+RUN chmod u+x start.sh && \
+    chown 755 start.sh
 CMD ["./start.sh"]
