@@ -9,15 +9,17 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def get_highest_review(keyword):
-    reviews = Review.objects.filter(text__contains=keyword).order_by("-score").values("userId__profileName",
-                                                                                      "userId__userId",
-                                                                                      "productId__productId",
-                                                                                      "helpfulness",
-                                                                                      "score",
-                                                                                      "time",
-                                                                                      "summary",
-                                                                                      "text")
-
+    # reviews = Review.objects.filter(text__contains=keyword).order_by("-score").prefetch_related('product',
+    #                                                                                             'user').values(
+    #     "user__name",
+    #     "user__user_id",
+    #     "product__product_id",
+    #     "helpfulness",
+    #     "score",
+    #     "time",
+    #     "summary",
+    #     "text")
+    reviews = Review.objects.filter(text__contains=keyword).order_by("-score")
     return reviews
 
 

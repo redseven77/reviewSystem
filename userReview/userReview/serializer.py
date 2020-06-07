@@ -5,18 +5,18 @@ from userReview.models import Review, User, Product
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('userId', 'profileName', 'id')
+        fields = ('user_id', 'name')
 
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = 'productId'
+        fields = ['product_id']
 
 
 class ReviewSerializer(serializers.ModelSerializer):
-    user = UserSerializer(many=True)
-    product = ProductSerializer(many=True)
+    user = UserSerializer()
+    product = ProductSerializer()
 
     class Meta:
         model = Review

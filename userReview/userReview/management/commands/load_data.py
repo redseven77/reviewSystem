@@ -48,19 +48,19 @@ class Command(BaseCommand):
                     logger.info("Entity: "+json.dumps(entities))
                     product_id = entities["product/productId"].strip()
                     product, created = Product.objects.get_or_create(
-                        defaults={"productId": product_id},
-                        productId=product_id)
+                        defaults={"product_id": product_id},
+                        product_id=product_id)
                     logger.info("CREATED: "+str(created))
                     user_id = entities["review/userId"].strip()
                     user_profile = entities["review/profileName"].strip()
                     user, created = User.objects.get_or_create(
-                        defaults={"userId": user_id, "profileName": user_profile},
-                        userId=user_id,
+                        defaults={"user_id": user_id, "name": user_profile},
+                        user_id=user_id,
                     )
                     logger.info("CREATED: "+str(created))
                     review = Review.objects.create(
-                        productId=product,
-                        userId=user,
+                        product=product,
+                        user=user,
                         helpfulness=entities["review/helpfulness"].strip(),
                         score=entities["review/score"].strip(),
                         time=entities["review/time"].strip(),

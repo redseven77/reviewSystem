@@ -67,13 +67,12 @@
             cards = document.createElement("DIV");
             cards.id = "review-cards"
             document.body.appendChild(cards);
-            {#console.table(results)#}
+            console.table(results)
             console.log(next_url)
             for (let review of results) {
                 let card = document.createElement("DIV");
                 cards.appendChild(card);
                 card.className = "card";
-
                 let scoreHelp = document.createElement("DIV");
                 card.appendChild(scoreHelp);
                 let score = document.createElement("SPAN");
@@ -98,11 +97,11 @@
                 let nameProduct = document.createElement("DIV");
                 card.appendChild(nameProduct);
                 let name = document.createElement("SPAN");
-                name.innerHTML = "Name : " + review.userId__profileName;
+                name.innerHTML = "Name : " + review.user.name;
                 name.className = "profile-name"
                 nameProduct.appendChild(name);
                 let product = document.createElement("SPAN");
-                product.innerHTML = "Product: " + review.productId;
+                product.innerHTML = "Product: " + review.product.product_id;
                 product.className = "product"
                 nameProduct.appendChild(product);
             }
@@ -214,7 +213,7 @@
         <button onclick="getReviews()"><i class="fa fa-search"></i></button>
         <div>
             <a href="javascript:previousPage().then(reviews => addReviews(reviews))" id="btn_prev">Prev</a>
-            page: <span id="page"></span>
+            <span id="page"></span>
             <a href="javascript:nextPage().then(reviews => addReviews(reviews))" id="btn_next">Next</a>
             <div id="review-cards">
                 <div id="listingTable"></div>
