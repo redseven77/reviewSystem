@@ -35,7 +35,7 @@
       cards = document.createElement("DIV");
       cards.id = "review-cards"
       document.body.appendChild(cards);
-
+        console.table(reviews)
       for (let review of reviews) {
         let card = document.createElement("DIV");
         cards.appendChild(card);
@@ -65,7 +65,7 @@
         let nameProduct = document.createElement("DIV");
         card.appendChild(nameProduct);
         let name = document.createElement("SPAN");
-        name.innerHTML = "Name : "+review.profileName;
+        name.innerHTML = "Name : "+review.userId__profileName;
         name.className = "profile-name"
         nameProduct.appendChild(name);
         let product = document.createElement("SPAN");
