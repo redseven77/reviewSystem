@@ -1,4 +1,4 @@
-# reviewSystem
+# ReviewSystem
 ###Pre-Requisites:
 * PostgresSql 12
 \
