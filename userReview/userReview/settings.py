@@ -4,7 +4,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 env_loc = os.path.join(BASE_DIR, '.env')
 
-media_path = os.path.join(BASE_DIR, 'userReview', 'media')
+MEDIA_PATH = os.path.join(BASE_DIR, 'userReview', 'media')
 
 with open(env_loc) as file:
     ENV = json.load(file)

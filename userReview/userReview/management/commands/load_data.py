@@ -14,7 +14,6 @@ logger.addHandler(handler)
 
 
 class Command(BaseCommand):
-    media_path = "/vagrant/reviewSystem/userReview"
 
     def add_arguments(self, parser):
         parser.add_argument('--name', help="file name run benchmark on.")
@@ -24,8 +23,8 @@ class Command(BaseCommand):
             file_name = None
             if options['name']:
                 file_name = options['name']
-            # file_path = os.path.join(Command.media_path, "userReview", "media", file_name)
-            self.load_file(file_path=file_name)
+            file_path = os.path.join(settings.MEDIA_PATH, file_name)
+            self.load_file(file_path=file_path)
         except Exception as e:
             import traceback
             traceback.print_exc()
