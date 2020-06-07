@@ -1,5 +1,5 @@
 # reviewSystem
-After Clone create a static directory in reviewSystem/userReview/userReview
-And put foods.txt folder in same directory.
-To upload the data
-run: docker build ./ --tag <tag name>
+After Clone:  
+*  create a static directory in __reviewSystem/userReview/userReview__
+* Put **foods.txt** folder in same directory.
+* run: docker build ./ --tag <tag name>
