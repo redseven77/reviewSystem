@@ -27,5 +27,5 @@ COPY . .
 RUN pip3 install -r requirements.txt && \
     pip3 freeze
 RUN python3 manage.py migrate && \
-    python3 manage.py load_data --name foods.txt
+    python3 manage.py load_data --name /usr/src/media/foods.txt
 CMD ["python3", "manage.py", "runserver", "0.0.0.0:8000"]

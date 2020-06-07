@@ -24,8 +24,8 @@ class Command(BaseCommand):
             file_name = None
             if options['name']:
                 file_name = options['name']
-            file_path = os.path.join(Command.media_path, "userReview", "media", file_name)
-            self.load_file(file_path=file_path)
+            # file_path = os.path.join(Command.media_path, "userReview", "media", file_name)
+            self.load_file(file_path=file_name)
         except Exception as e:
             import traceback
             traceback.print_exc()
