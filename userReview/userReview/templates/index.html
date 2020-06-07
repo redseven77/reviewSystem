@@ -2,175 +2,226 @@
 <html lang="">
 
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>PrVV</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Reviews</title>
 
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.13.0/index.js" ></script> -->
-  <!-- <script src="main.js" type="module"></script> -->
-  <script>
-    function getReviews() {
-      console.log('get me');
-      let searchText = document.getElementById("search-review").value
-      if (searchText !== '') {
-        callBE(searchText).then(reviews=>addReviews(reviews));
-        // addReviews(reviews);
-      }
-    }
-    function callBE(search) {
-        const url = 'http://localhost:8000/search?keyword='+search
-        return new Promise((resolve, reject)=>{
-          axios.get(url).then(response => {
-              resolve(response.data);
-          }).catch(error => console.error("Error in getting api response", error));
-        });
-    }
-    function addReviews(reviews) {
-      let cards = document.getElementById("review-cards");
-      cards.remove();
-      cards = document.createElement("DIV");
-      cards.id = "review-cards"
-      document.body.appendChild(cards);
-        console.table(reviews)
-      for (let review of reviews) {
-        let card = document.createElement("DIV");
-        cards.appendChild(card);
-        card.className = "card";
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.13.0/index.js" ></script> -->
+    <!-- <script src="main.js" type="module"></script> -->
+    <script>
+        let next_url = null;
+        let current = 0;
+        let previous_url = null;
+        let lastPage = 0;
+        let pageNo = document.getElementById("page-no")
+        let countItemsOnPage = 100;
 
-        let scoreHelp = document.createElement("DIV");
-        card.appendChild(scoreHelp);
-        let score = document.createElement("SPAN");
-        score.innerHTML = "Score : "+review.score;
-        score.className = "score"
-        scoreHelp.appendChild(score);
-        let helpfulness = document.createElement("SPAN");
-        helpfulness.innerHTML = "Helpfulness : "+review.helpfulness;
-        helpfulness.className = "helpfulness"
-        scoreHelp.appendChild(helpfulness);
+        function getReviews() {
+            console.log('get me');
+            let searchText = document.getElementById("search-review").value
+            if (searchText !== '') {
+                callBE(searchText).then(reviews => addReviews(reviews));
+                // addReviews(reviews);
+            }
+        }
 
-        let summary = document.createElement("DIV");
-        summary.innerHTML = review.summary;
-        summary.className = "summary";
-        card.appendChild(summary);
+        function callBE(search) {
+            const url = 'http://localhost:8000/search?keyword=' + search
+            return new Promise((resolve, reject) => {
+                axios.get(url).then(response => {
+                    resolve(response.data);
+                }).catch(error => console.error("Error in getting api response", error));
+            });
+        }
 
-        let text = document.createElement("DIV");
-        text.innerHTML = review.text;
-        text.className = "text";
-        card.appendChild(text);
+        function nextPage() {
+            return new Promise((resolve, reject) => {
+                axios.get(next_url).then(response => {
+                    resolve(response.data);
+                }).catch(error => console.error("Error in getting api response", error));
+            });
+        }
 
-        let nameProduct = document.createElement("DIV");
-        card.appendChild(nameProduct);
-        let name = document.createElement("SPAN");
-        name.innerHTML = "Name : "+review.userId__profileName;
-        name.className = "profile-name"
-        nameProduct.appendChild(name);
-        let product = document.createElement("SPAN");
-        product.innerHTML = "Product Id : "+review.productId;
-        product.className = "product"
-        nameProduct.appendChild(product);
-      }
+        function previousPage() {
+            return new Promise((resolve, reject) => {
+                axios.get(previous_url).then(response => {
+                    resolve(response.data);
+                }).catch(error => console.error("Error in getting api response", error));
+            });
+        }
 
-    }
+        function addReviews(reviews) {
+            countItemsOnPage = reviews["countItemsOnPage"];
+            current = reviews["current"];
+            next_url = reviews["next"];
+            previous_url = reviews["previous"];
+            lastPage = reviews["lastPage"];
+            let results = reviews["results"];
+            pageNo = parseInt(current);
+            let cards = document.getElementById("review-cards");
+            cards.remove();
+            cards = document.createElement("DIV");
+            cards.id = "review-cards"
+            document.body.appendChild(cards);
+            {#console.table(results)#}
+            console.log(next_url)
+            for (let review of results) {
+                let card = document.createElement("DIV");
+                cards.appendChild(card);
+                card.className = "card";
 
-  </script>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+                let scoreHelp = document.createElement("DIV");
+                card.appendChild(scoreHelp);
+                let score = document.createElement("SPAN");
+                score.innerHTML = "Score : " + review.score;
+                score.className = "score"
+                scoreHelp.appendChild(score);
+                let helpfulness = document.createElement("SPAN");
+                helpfulness.innerHTML = "Helpfulness : " + review.helpfulness;
+                helpfulness.className = "helpfulness"
+                scoreHelp.appendChild(helpfulness);
 
-    /* Style the search field */
-    div.example input[type=text] {
-      padding: 10px;
-      font-size: 17px;
-      border: 1px solid grey;
-      float: left;
-      width: 80%;
-      background: #f1f1f1;
-    }
+                let summary = document.createElement("DIV");
+                summary.innerHTML = review.summary;
+                summary.className = "summary";
+                card.appendChild(summary);
 
-    /* Style the submit button */
-    div.example button {
-      float: left;
-      width: 20%;
-      padding: 10px;
-      background: #2196F3;
-      color: white;
-      font-size: 17px;
-      border: 1px solid grey;
-      border-left: none;
-      /* Prevent double borders */
-      cursor: pointer;
-    }
+                let text = document.createElement("DIV");
+                text.innerHTML = review.text;
+                text.className = "text";
+                card.appendChild(text);
 
-    div.example button:hover {
-      background: #0b7dda;
-    }
+                let nameProduct = document.createElement("DIV");
+                card.appendChild(nameProduct);
+                let name = document.createElement("SPAN");
+                name.innerHTML = "Name : " + review.userId__profileName;
+                name.className = "profile-name"
+                nameProduct.appendChild(name);
+                let product = document.createElement("SPAN");
+                product.innerHTML = "Product: " + review.productId;
+                product.className = "product"
+                nameProduct.appendChild(product);
+            }
 
-    /* Clear floats */
-    div.example::after {
-      content: "";
-      clear: both;
-      display: table;
-    }
+        }
 
-    .card {
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-      width: 90%;
-      margin: auto;
-      text-align: center;
-        font-family: arial, serif;
-      padding: 5px;
-      overflow: hidden;
-    }
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-    #review-cards {
-      padding: 60px;
-    }
+        /* Style the search field */
+        div.example input[type=text] {
+            padding: 10px;
+            font-size: 17px;
+            border: 1px solid grey;
+            float: left;
+            width: 80%;
+            background: #f1f1f1;
+        }
 
-    .text {
-      width: 100%;
-      padding: 20px;
-    }
+        /* Style the submit button */
+        div.example button {
+            float: left;
+            width: 20%;
+            padding: 10px;
+            background: #2196F3;
+            color: white;
+            font-size: 17px;
+            border: 1px solid grey;
+            border-left: none;
+            /* Prevent double borders */
+            cursor: pointer;
+        }
 
-    .helpfulness {
-      float: left;
-    }
+        div.example button:hover {
+            background: #0b7dda;
+        }
 
-    .summary{
-      font-weight: bold;
-    }
+        /* Clear floats */
+        div.example::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
 
-    .score {
-      color: grey;
-      float: right;
-    }
-    .profile-name {
-      float: left;
-    }
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            width: 90%;
+            margin: auto;
+            text-align: center;
+            font-family: arial, serif;
+            padding: 5px;
+            overflow: hidden;
+        }
 
-    .product {
-      color: grey;
-      float: right;
-    }
-  </style>
+        #review-cards {
+            padding: 60px;
+        }
+
+        .text {
+            width: 100%;
+            padding: 20px;
+        }
+
+        .helpfulness {
+            float: left;
+        }
+
+        .summary {
+            font-weight: bold;
+        }
+
+        .score {
+            color: grey;
+            float: right;
+        }
+
+        .profile-name {
+            float: left;
+        }
+
+        .product {
+            color: grey;
+            float: right;
+        }
+
+        .pagination {
+            display: inline-block;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+    </style>
 
 
 </head>
 
 <body>
-  <div id="app"></div>
-  <div>
+<div id="app"></div>
+<div>
     <div class="example">
         <label for="search-review"></label><input id="search-review" name="search" placeholder="Search.." type="text">
-      <button onclick="getReviews()"><i class="fa fa-search"></i></button>
-      <div id="review-cards">
-      </div>
+        <button onclick="getReviews()"><i class="fa fa-search"></i></button>
+        <div>
+            <a href="javascript:previousPage().then(reviews => addReviews(reviews))" id="btn_prev">Prev</a>
+            page: <span id="page"></span>
+            <a href="javascript:nextPage().then(reviews => addReviews(reviews))" id="btn_next">Next</a>
+            <div id="review-cards">
+                <div id="listingTable"></div>
+            </div>
+        </div>
     </div>
-  </div>
+</div>
 </body>
 
 </html>
