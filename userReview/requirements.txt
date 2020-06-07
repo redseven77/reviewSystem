@@ -105,7 +105,7 @@ ply==3.11
 premailer==3.2.0
 prompt-toolkit==3.0.4
 protobuf==3.11.3
-psutil==5.4.7
+psutil==5.6.6
 psycopg2==2.8.4
 psycopg2-binary==2.8.4
 ptyprocess==0.6.0
