@@ -39,7 +39,7 @@ docutils==0.15.2
 entrypoints==0.3
 future==0.16.0
 HeapDict==1.0.0
-httplib2==0.17.3
+httplib2==0.18.0
 hurry==1.0
 hurry.filesize==0.9
 idna==2.9
