@@ -70,7 +70,7 @@ mistune==0.8.4
 mock==3.0.5
 more-itertools==7.2.0
 msgpack==0.5.6
-nltk==3.3
+nltk==3.4.5
 parsedatetime==2.5
 parso==0.6.2
 patsy==0.5.0
